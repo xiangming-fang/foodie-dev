@@ -1,8 +1,8 @@
 package indi.xm;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import tk.mybatis.spring.annotation.MapperScan;
 
 /**
  * @ProjectName: foodie-dev
@@ -14,7 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 // 扫描 mybatis 通用 mapper 所在的包
-//@MapperScan(basePackages = "indi.xm.mapper")
+@MapperScan(basePackages = "indi.xm.mapper")
 public class Application {
 
     public static void main(String[] args) {
