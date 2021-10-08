@@ -12,7 +12,7 @@ import java.io.File;
  */
 public class RenameTest {
 
-    @Test
+//    @Test
     public void videoRenameTest(){
         File targetFile = new File("E:\\study\\阶段一：单体电商项目架构，开发与上线（1~5周）");
         recursionUpdateFileNames(targetFile);
