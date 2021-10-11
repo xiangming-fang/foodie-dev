@@ -33,13 +33,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-<!--            <exclusions>-->
-<!--                &lt;!&ndash; 排除 springboot 自带的日志记录方式&ndash;&gt;-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.springframework.boot</groupId>-->
-<!--                    <artifactId>spring-boot-starter-logging</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
+            <exclusions>
+                <!-- 排除 springboot 自带的日志记录方式-->
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- springboot 默认配置是可以解析yml-->
         <!-- 如果项目里有.properties或者.xml配置需要被解析，那么就需要使用到configuration-processor-->
