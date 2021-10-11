@@ -2,6 +2,7 @@ package indi.xm.controller;
 
 import indi.xm.service.StuService;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 
@@ -14,6 +15,8 @@ import javax.annotation.Resource;
  * @Date: 2021/10/8 14:24
  */
 @RestController
+// 忽略在Swagger显示
+@ApiIgnore
 public class StuFooController {
 
     @Resource

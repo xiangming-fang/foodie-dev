@@ -3,6 +3,8 @@ package indi.xm.controller;
 import indi.xm.bo.UserBo;
 import indi.xm.service.UserService;
 import indi.xm.utils.XMJSONResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,7 @@ import javax.annotation.Resource;
 @RestController
 // 路由
 @RequestMapping("passport")
+@Api(value = "注册登录",tags = {"用于注册登录的相关接口"})
 public class PassPortController {
 
     @Resource
@@ -31,6 +34,7 @@ public class PassPortController {
      * @return
      */
     @GetMapping("/usernameIsExist")
+    @ApiOperation(value = "用户名是否存在",notes = "用户名是否存在",httpMethod = "GET")
     // @RequestParam 代表是一种请求类型的参数，而不是一种路径参数
     public int usernameIsExist(@RequestParam String username){
 
@@ -57,6 +61,7 @@ public class PassPortController {
      */
     @PostMapping("/register")
     // @RequestBody 代表参数是一个对象
+    @ApiOperation(value = "用户注册",notes = "用户注册",httpMethod = "POST")
     public XMJSONResult register(@RequestBody UserBo userbo){
         String username = userbo.getUsername();
         String password = userbo.getPassword();
