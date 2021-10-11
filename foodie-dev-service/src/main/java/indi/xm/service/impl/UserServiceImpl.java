@@ -7,6 +7,7 @@ import indi.xm.pojo.Users;
 import indi.xm.service.UserService;
 import indi.xm.utils.DateUtil;
 import indi.xm.utils.MD5Utils;
+import indi.xm.utils.XMJSONResult;
 import org.apache.catalina.User;
 import org.n3r.idworker.Sid;
 import org.springframework.stereotype.Service;
@@ -73,6 +74,21 @@ public class UserServiceImpl implements UserService {
         users.setUpdatedTime(new Date());
 
         usersMapper.insert(users);
+        return users;
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public Users queryUserForLogin(String username, String password) {
+        Example userExample = new Example(Users.class);
+        Example.Criteria criteria = userExample.createCriteria();
+        criteria.andEqualTo("username",username);
+        try {
+            criteria.andEqualTo("password",MD5Utils.getMD5Str(password));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        Users users = usersMapper.selectOneByExample(userExample);
         return users;
     }
 }

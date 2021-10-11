@@ -1,7 +1,10 @@
 package indi.xm.controller;
 
 import indi.xm.bo.UserBo;
+import indi.xm.pojo.Users;
 import indi.xm.service.UserService;
+import indi.xm.utils.CookieUtils;
+import indi.xm.utils.JsonUtils;
 import indi.xm.utils.XMJSONResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -9,6 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @ProjectName: foodie-dev
@@ -62,7 +67,8 @@ public class PassPortController {
     @PostMapping("/register")
     // @RequestBody 代表参数是一个对象
     @ApiOperation(value = "用户注册",notes = "用户注册",httpMethod = "POST")
-    public XMJSONResult register(@RequestBody UserBo userbo){
+    public XMJSONResult register(@RequestBody UserBo userbo,
+                                 HttpServletRequest request, HttpServletResponse response){
         String username = userbo.getUsername();
         String password = userbo.getPassword();
         String confirmPassword = userbo.getConfirmPassword();
@@ -85,7 +91,50 @@ public class PassPortController {
             return XMJSONResult.errorMsg("两次密码输入不一致");
         }
         // 5、实现注册
-        userService.createUser(userbo);
+        Users user = userService.createUser(userbo);
+        // 将一些属性设置成空，保护隐私
+        setNullProperty(user);
+        // 设置cookie信息
+        CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(user),true);
         return XMJSONResult.ok();
+    }
+
+    /**
+     * 用户注册
+     *
+     * @param userbo
+     * @return
+     */
+    @PostMapping("/login")
+    @ApiOperation(value = "用户登录",notes = "用户登录",httpMethod = "POST")
+    public XMJSONResult login(@RequestBody UserBo userbo,
+                              HttpServletRequest request, HttpServletResponse response){
+        String username = userbo.getUsername();
+        String password = userbo.getPassword();
+
+        // 1、判断用户名密码必须不为空
+        if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
+            return XMJSONResult.errorMsg("用户名或密码为空");
+        }
+
+        // 2、实现登录
+        Users users = userService.queryUserForLogin(username, password);
+        if (users == null){
+            return XMJSONResult.errorMsg("用户名或密码不正确");
+        }
+        // 将一些属性设置成空，保护隐私
+        setNullProperty(users);
+        // 设置cookie信息
+        CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(users),true);
+        return XMJSONResult.ok(users);
+    }
+
+    private void setNullProperty(Users users){
+        users.setPassword(null);
+        users.setRealname(null);
+        users.setEmail(null);
+        users.setCreatedTime(null);
+        users.setUpdatedTime(null);
+        users.setBirthday(null);
     }
 }
