@@ -6,6 +6,7 @@ spring:
     url: jdbc:mysql://localhost:3306/foodie-shop-dev?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
     password: 123456
 
-#mybatis:
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# 开启 mybatis 日志 sql打印 (开发环境开启，生产环境不要开）
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
