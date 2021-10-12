@@ -129,6 +129,25 @@ public class PassPortController {
         return XMJSONResult.ok(users);
     }
 
+    /**
+     * 退出登录
+     *
+     * @param userId
+     * @return
+     */
+    @PostMapping("/logout")
+    @ApiOperation(value = "退出登录",notes = "退出登录",httpMethod = "POST")
+    public XMJSONResult logout(String userId,
+                              HttpServletRequest request, HttpServletResponse response){
+        // 清楚用户相关信息的cookie
+        CookieUtils.deleteCookie(request,response,"user");
+
+        // TODO 用户退出登录，需要清空购物车
+        // TODO 分布式会话中需要清除用户数据
+
+        return XMJSONResult.ok();
+    }
+
     private void setNullProperty(Users users){
         users.setPassword(null);
         users.setRealname(null);
