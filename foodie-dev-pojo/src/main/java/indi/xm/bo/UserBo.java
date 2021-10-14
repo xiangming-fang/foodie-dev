@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @Package: indi.xm.bo
  * @ClassName: UserBo
  * @Author: albert.fang
- * @Description: 前端传给后端的实体参数
+ * @Description: 前端传给后端的实体参数（和业务打交道的实体类,前端发送请求过来的）
  * @Date: 2021/10/11 14:15
  */
 @ApiModel(value = "用户对象Bo",description = "从客户端，由用户传入的数据封装在此entity中")

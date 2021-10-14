@@ -4,6 +4,7 @@ import indi.xm.enums.CategoryLevel;
 import indi.xm.mapper.CategoryMapper;
 import indi.xm.pojo.Category;
 import indi.xm.service.CategoryService;
+import indi.xm.vo.CategoryVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,5 +36,11 @@ public class CategoryServiceImpl implements CategoryService {
         criteria.andEqualTo("type", CategoryLevel.FIRST.level);
 
         return categoryMapper.selectByExample(example);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public List<CategoryVO> getSubCatList(Integer rootCatId) {
+        return categoryMapper.getSubCatList(rootCatId);
     }
 }

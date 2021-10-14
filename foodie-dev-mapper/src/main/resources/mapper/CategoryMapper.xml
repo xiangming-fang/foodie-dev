@@ -14,4 +14,40 @@
     <result column="cat_image" property="catImage" jdbcType="VARCHAR" />
     <result column="bg_color" property="bgColor" jdbcType="VARCHAR" />
   </resultMap>
+
+  <!-- jdbcType 可要可不要 -->
+  <resultMap id="myCategoryVO" type="indi.xm.vo.CategoryVO">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="fatherId" property="fatherId" jdbcType="INTEGER" />
+    <!--
+      collection 映射list
+      ofType 这个集合对应哪个类型
+      property 对应三级分类的list属性名
+    -->
+    <collection property="subCategoryVOS" ofType="indi.xm.vo.SubCategoryVO">
+      <id column="subId" property="subId" jdbcType="INTEGER" />
+      <result column="subName" property="subName" jdbcType="VARCHAR" />
+      <result column="subType" property="subType" jdbcType="INTEGER" />
+      <result column="subFatherId" property="subFatherId" jdbcType="INTEGER" />
+    </collection>
+  </resultMap>
+
+  <select id="getSubCatList" parameterType="Integer" resultMap="myCategoryVO">
+    SELECT
+      f.id AS id,
+      f.NAME AS NAME,
+      f.type AS type,
+      f.father_id AS fatherId,
+      c.id AS subId,
+      c.`name` AS subName,
+      c.type AS subType,
+      c.father_id AS subFatherId
+    FROM
+      category f
+        LEFT JOIN category c ON f.id = c.father_id
+    WHERE
+      f.father_id = #{rootCatId};
+  </select>
 </mapper>
