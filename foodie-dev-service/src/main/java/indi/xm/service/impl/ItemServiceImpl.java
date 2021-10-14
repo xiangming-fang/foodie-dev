@@ -10,6 +10,7 @@ import indi.xm.utils.DesensitizationUtil;
 import indi.xm.utils.PagedGridResult;
 import indi.xm.vo.CommentLevelCountVO;
 import indi.xm.vo.ItemCommentVO;
+import indi.xm.vo.SearchItemsVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -114,6 +115,22 @@ public class ItemServiceImpl implements ItemService {
         for (ItemCommentVO vo : list) {
             vo.setNickname(DesensitizationUtil.commonDisplay(vo.getNickname()));
         }
+        return setterPageGrid(list,page);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public PagedGridResult searchItems(
+            String keywords,String sort, Integer page, Integer pageSize) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("keywords",keywords);
+        map.put("sort",sort);
+
+        // mybatis-pagehelper 分页助手
+        // 在查询之前使用分页插件，原理 - 统一拦截sql，为其提供分页功能
+        PageHelper.startPage(page,pageSize);
+        List<SearchItemsVO> list = itemsMapper.searchItems(map);
+
         return setterPageGrid(list,page);
     }
 

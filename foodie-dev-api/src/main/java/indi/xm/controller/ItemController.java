@@ -85,4 +85,22 @@ public class ItemController {
         PagedGridResult pagedGridResult = itemService.queryPagedComments(itemId, level, page, pageSize);
         return XMJSONResult.ok(pagedGridResult);
     }
+
+    @GetMapping("/search")
+    @ApiOperation(value = "商品搜索",notes = "商品搜索",httpMethod = "GET")
+    public XMJSONResult search(
+            @ApiParam(name = "keywords",value = "关键字",required = true)
+            @RequestParam String keywords,
+            @ApiParam(name = "sort",value = "优先排序")
+            @RequestParam(required = false,defaultValue = "k") String sort,
+            @ApiParam(name = "page",value = "第几页")
+            @RequestParam(required = false,defaultValue = "1") Integer page,
+            @ApiParam(name = "pageSize",value = "一页大小")
+            @RequestParam(required = false,defaultValue = "20") Integer pageSize){
+        if (StringUtils.isBlank(keywords)){
+            return XMJSONResult.errorMsg("关键字为空");
+        }
+        PagedGridResult pagedGridResult = itemService.searchItems(keywords, sort, page, pageSize);
+        return XMJSONResult.ok(pagedGridResult);
+    }
 }

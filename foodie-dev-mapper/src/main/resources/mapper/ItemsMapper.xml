@@ -15,4 +15,39 @@
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
     <result column="content" property="content" jdbcType="LONGVARCHAR" />
   </resultMap>
+
+  <select id="searchItems" parameterType="map" resultType="indi.xm.vo.SearchItemsVO">
+    SELECT
+      i.id AS itemId,
+      i.item_name AS itemName,
+      i.sell_counts AS sell_counts,
+      img.url as imgUrl,
+      tempSpec.price_discount AS prise
+    FROM
+      items i
+        LEFT JOIN items_img img ON i.id = img.item_id
+        LEFT JOIN ( SELECT item_id, MIN( price_discount ) AS price_discount FROM items_spec GROUP BY item_id ) tempSpec
+        ON i.id = tempSpec.item_id
+    WHERE
+      img.is_main = 1
+      <if test="map.keywords != null and map.keywords != '' ">
+      /* 字符串拼接不能用 # 号，而是 $ 符号 */
+        AND i.item_name like '%${map.keywords}%'
+      </if>
+      order by
+    --       k: 默认，代表默认排序
+    --       c: 根据销量排序
+    --       p: 根据价格排序
+      <choose>
+        <when test="map.sort == &quot;c &quot;">
+          i.sell_counts desc
+        </when>
+        <when test="map.sort ==  &quot;p &quot;">
+          tempSpec.price_discount asc
+        </when>
+        <otherwise>
+          i.item_name asc
+        </otherwise>
+      </choose>
+  </select>
 </mapper>
