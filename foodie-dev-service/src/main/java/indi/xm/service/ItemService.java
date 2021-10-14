@@ -4,7 +4,9 @@ import indi.xm.pojo.Items;
 import indi.xm.pojo.ItemsImg;
 import indi.xm.pojo.ItemsParam;
 import indi.xm.pojo.ItemsSpec;
+import indi.xm.utils.PagedGridResult;
 import indi.xm.vo.CommentLevelCountVO;
+import indi.xm.vo.ItemCommentVO;
 
 import java.util.List;
 
@@ -56,4 +58,12 @@ public interface ItemService {
      * @param itemId
      */
     public CommentLevelCountVO queryCommentCounts(String itemId);
+
+    /**
+     * 根据商品id和等级查询具体商品评论
+     *
+     * @param itemId
+     * @return
+     */
+    public PagedGridResult queryPagedComments(String itemId, Integer level, Integer page, Integer pageSize);
 }

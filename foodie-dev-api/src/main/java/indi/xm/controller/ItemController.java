@@ -5,6 +5,7 @@ import indi.xm.pojo.ItemsImg;
 import indi.xm.pojo.ItemsParam;
 import indi.xm.pojo.ItemsSpec;
 import indi.xm.service.ItemService;
+import indi.xm.utils.PagedGridResult;
 import indi.xm.utils.XMJSONResult;
 import indi.xm.vo.CommentLevelCountVO;
 import indi.xm.vo.InfoVO;
@@ -65,5 +66,23 @@ public class ItemController {
         }
         CommentLevelCountVO commentLevelCountVO = itemService.queryCommentCounts(itemId);
         return XMJSONResult.ok(commentLevelCountVO);
+    }
+
+    @GetMapping("/comments")
+    @ApiOperation(value = "查询商品评论",notes = "查询商品评论",httpMethod = "GET")
+    public XMJSONResult comments(
+            @ApiParam(name = "itemId",value = "商品id",required = true)
+            @RequestParam String itemId,
+            @ApiParam(name = "level",value = "评论等级")
+            @RequestParam(required = false,defaultValue = "1") Integer level,
+            @ApiParam(name = "page",value = "第几页")
+            @RequestParam(required = false,defaultValue = "1") Integer page,
+            @ApiParam(name = "pageSize",value = "一页大小")
+            @RequestParam(required = false,defaultValue = "10") Integer pageSize){
+        if (StringUtils.isBlank(itemId)){
+            return XMJSONResult.errorMsg("商品id为null");
+        }
+        PagedGridResult pagedGridResult = itemService.queryPagedComments(itemId, level, page, pageSize);
+        return XMJSONResult.ok(pagedGridResult);
     }
 }

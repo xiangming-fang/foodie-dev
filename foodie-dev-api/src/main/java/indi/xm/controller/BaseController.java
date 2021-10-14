@@ -17,23 +17,8 @@ import javax.servlet.http.HttpSession;
  * @Description:
  * @Date: 2021/9/13 15:39
  */
-@RestController
-// 忽略在Swagger显示
+@Controller
 @ApiIgnore
-public class HelloController {
+public class BaseController {
 
-    @GetMapping("helloWorld")
-    public String helloWorld(){
-        return "hello world";
-    }
-
-    @GetMapping("/setSession")
-    public Object setSession(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        session.setAttribute("userInfo","new user");
-        session.setMaxInactiveInterval(3600);
-        session.getAttribute("userInfo");
-//        session.removeAttribute("userInfo");
-        return "ok";
-    }
 }

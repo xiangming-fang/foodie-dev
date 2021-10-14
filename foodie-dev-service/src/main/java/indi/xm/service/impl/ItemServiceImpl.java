@@ -1,17 +1,23 @@
 package indi.xm.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import indi.xm.enums.CommentLevel;
 import indi.xm.mapper.*;
 import indi.xm.pojo.*;
 import indi.xm.service.ItemService;
+import indi.xm.utils.PagedGridResult;
 import indi.xm.vo.CommentLevelCountVO;
+import indi.xm.vo.ItemCommentVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ProjectName: foodie-dev
@@ -88,6 +94,39 @@ public class ItemServiceImpl implements ItemService {
         commentLevelCountVO.setTotalCounts(totalCounts);
         return commentLevelCountVO;
     }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public PagedGridResult queryPagedComments(
+                                        String itemId, Integer level,
+                                        Integer page,Integer pageSize) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("itemId",itemId);
+        map.put("level",level);
+        
+        // mybatis-pagehelper 分页助手
+        // 在查询之前使用分页插件，原理 - 统一拦截sql，为其提供分页功能
+        PageHelper.startPage(page,pageSize);
+        List<ItemCommentVO> list = itemsCommentsMapper.queryItemComments(map);
+
+        return setterPageGrid(list,page);
+    }
+
+    private PagedGridResult setterPageGrid(List<?> list,Integer page){
+        // 分页处理
+        PageInfo<?> pageList = new PageInfo<>(list);
+        PagedGridResult gridResult = new PagedGridResult();
+        // 当前第几页
+        gridResult.setPage(page);
+        // list 分页后的数据
+        gridResult.setRows(list);
+        // total 总页数
+        gridResult.setTotal(pageList.getPages());
+        // records 总记录数
+        gridResult.setRecords(pageList.getTotal());
+        return gridResult;
+    }
+
 
     @Transactional(propagation = Propagation.SUPPORTS)
     Integer getCommentCounts(String itemId, Integer level){
