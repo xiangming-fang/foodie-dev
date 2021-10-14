@@ -9,6 +9,7 @@ import indi.xm.utils.PagedGridResult;
 import indi.xm.utils.XMJSONResult;
 import indi.xm.vo.CommentLevelCountVO;
 import indi.xm.vo.InfoVO;
+import indi.xm.vo.ShopCartVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -120,5 +121,18 @@ public class ItemController {
         }
         PagedGridResult pagedGridResult = itemService.searchItemsByThirdCat(catId, sort, page, pageSize);
         return XMJSONResult.ok(pagedGridResult);
+    }
+
+    // 用于数据长时间未登录网址，刷新购物车中的数据
+    @GetMapping("/refresh")
+    @ApiOperation(value = "根据商品规格ids查找最新的商品数据",notes = "根据商品规格ids查找最新的商品数据",httpMethod = "GET")
+    public XMJSONResult refresh(
+            @ApiParam(name = "itemSpecIds",value = "拼接的规格ids",required = true,example = "1,3,5")
+            @RequestParam String itemSpecIds){
+        if (StringUtils.isBlank(itemSpecIds)){
+            return XMJSONResult.ok();
+        }
+        List<ShopCartVO> shopCartVOS = itemService.queryItemsBySpecIds(itemSpecIds);
+        return XMJSONResult.ok(shopCartVOS);
     }
 }

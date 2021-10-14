@@ -33,7 +33,9 @@ public class ShopCartController {
         if (StringUtils.isBlank(userId)){
             return XMJSONResult.errorMsg("用户id为空");
         }
+
         // TODO 前端用户在登录的情况下，添加商品到购物车，会同时在后端同步购物车到redis缓存
+
         return XMJSONResult.ok();
     }
 }

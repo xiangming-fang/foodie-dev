@@ -11,15 +11,14 @@ import indi.xm.utils.PagedGridResult;
 import indi.xm.vo.CommentLevelCountVO;
 import indi.xm.vo.ItemCommentVO;
 import indi.xm.vo.SearchItemsVO;
+import indi.xm.vo.ShopCartVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ProjectName: foodie-dev
@@ -150,7 +149,17 @@ public class ItemServiceImpl implements ItemService {
         return setterPageGrid(list,page);
     }
 
-    private PagedGridResult setterPageGrid(List<?> list,Integer page){
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public List<ShopCartVO> queryItemsBySpecIds(String specIds) {
+        String[] ids = specIds.split(",");
+        List<String> specIdList = new ArrayList<>();
+        // 将 ids 全部加入到 specIdList 中
+        Collections.addAll(specIdList,ids);
+        return itemsMapper.queryItemsBySpecIds(specIdList);
+    }
+
+    private PagedGridResult setterPageGrid(List<?> list, Integer page){
         // 分页处理
         PageInfo<?> pageList = new PageInfo<>(list);
         PagedGridResult gridResult = new PagedGridResult();

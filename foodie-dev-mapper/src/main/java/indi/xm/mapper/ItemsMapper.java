@@ -3,6 +3,7 @@ package indi.xm.mapper;
 import indi.xm.my.mapper.MyMapper;
 import indi.xm.pojo.Items;
 import indi.xm.vo.SearchItemsVO;
+import indi.xm.vo.ShopCartVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,4 +24,12 @@ public interface ItemsMapper extends MyMapper<Items> {
      * @param map
      */
     public List<SearchItemsVO> searchItemsByThirdCat(@Param("map") Map<String,Object> map);
+
+    /**
+     * 根据商品规格ids查找商品信息集合
+     *
+     * @param specIdList
+     * @return
+     */
+    public List<ShopCartVO> queryItemsBySpecIds(@Param("specIdList") List<String> specIdList);
 }

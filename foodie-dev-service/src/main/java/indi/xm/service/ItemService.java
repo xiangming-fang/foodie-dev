@@ -6,9 +6,9 @@ import indi.xm.pojo.ItemsParam;
 import indi.xm.pojo.ItemsSpec;
 import indi.xm.utils.PagedGridResult;
 import indi.xm.vo.CommentLevelCountVO;
+import indi.xm.vo.ShopCartVO;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @ProjectName: foodie-dev
@@ -88,4 +88,12 @@ public interface ItemService {
      * @return
      */
     public PagedGridResult searchItemsByThirdCat(String catId,String sort, Integer page, Integer pageSize);
+
+    /**
+     * 根据商品规格ids查找商品信息集合（用于刷新购物车中的数据）
+     *
+     * @param specIds
+     * @return
+     */
+    public List<ShopCartVO> queryItemsBySpecIds(String specIds);
 }
