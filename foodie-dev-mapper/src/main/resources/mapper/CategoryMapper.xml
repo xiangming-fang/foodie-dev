@@ -34,6 +34,21 @@
     </collection>
   </resultMap>
 
+  <!-- 各个分类下的6个最新推荐 -->
+  <resultMap id="myNewItemsVO" type="indi.xm.vo.NewItemsVO">
+    <id column="rootCatId" property="rootCatId" jdbcType="INTEGER" />
+    <result column="rootCatName" property="rootCatName" jdbcType="VARCHAR" />
+    <result column="slogan" property="slogan" jdbcType="VARCHAR" />
+    <result column="catImage" property="catImage" jdbcType="VARCHAR" />
+    <result column="bgColor" property="bgColor" jdbcType="VARCHAR" />
+
+    <collection property="simpleItemVOS" ofType="indi.xm.vo.SimpleItemVO">
+      <result column="itemId" property="itemId" jdbcType="VARCHAR" />
+      <result column="itemName" property="itemName" jdbcType="VARCHAR" />
+      <result column="itemUrl" property="itemUrl" jdbcType="VARCHAR" />
+    </collection>
+  </resultMap>
+
   <select id="getSubCatList" parameterType="Integer" resultMap="myCategoryVO">
     SELECT
       f.id AS id,
@@ -49,5 +64,29 @@
         LEFT JOIN category c ON f.id = c.father_id
     WHERE
       f.father_id = #{rootCatId};
+  </select>
+
+  <select id="getSixNewItemsLazy" resultMap="myNewItemsVO" parameterType="map">
+    SELECT
+      f.id as rootCatId,
+      f.`name` as rootCatName,
+      f.slogan as slogan,
+      f.cat_image as catImage,
+      f.bg_color as bgColor,
+      i.id as itemId,
+      i.item_name as itemName,
+      img.url as itemUrl,
+      i.created_time as createTime
+    FROM
+      category f
+        LEFT JOIN items i ON f.id = i.root_cat_id
+        LEFT JOIN items_img img ON i.id = img.item_id
+    WHERE
+      f.type = 1
+      AND i.root_cat_id = #{paramsMap.rootCatId}
+      AND img.is_main = 1
+    ORDER BY
+      i.created_time DESC
+      LIMIT 0,6;
   </select>
 </mapper>
