@@ -96,11 +96,15 @@ public class PassPortController {
         setNullProperty(user);
         // 设置cookie信息
         CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(user),true);
+
+        // TODO 生成用户token，存入redis会话
+        // TODO 同步购物车数据
+
         return XMJSONResult.ok();
     }
 
     /**
-     * 用户注册
+     * 用户登录
      *
      * @param userbo
      * @return
@@ -126,6 +130,10 @@ public class PassPortController {
         setNullProperty(users);
         // 设置cookie信息
         CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(users),true);
+
+        // TODO 生成用户token，存入redis会话
+        // TODO 同步购物车数据
+
         return XMJSONResult.ok(users);
     }
 
