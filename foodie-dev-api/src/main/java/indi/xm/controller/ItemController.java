@@ -103,4 +103,22 @@ public class ItemController {
         PagedGridResult pagedGridResult = itemService.searchItems(keywords, sort, page, pageSize);
         return XMJSONResult.ok(pagedGridResult);
     }
+
+    @GetMapping("/catItems")
+    @ApiOperation(value = "通过分类id搜索商品列表",notes = "通过分类id搜索商品列表",httpMethod = "GET")
+    public XMJSONResult catItems(
+            @ApiParam(name = "catId",value = "分类id",required = true)
+            @RequestParam String catId,
+            @ApiParam(name = "sort",value = "优先排序")
+            @RequestParam(required = false,defaultValue = "k") String sort,
+            @ApiParam(name = "page",value = "第几页")
+            @RequestParam(required = false,defaultValue = "1") Integer page,
+            @ApiParam(name = "pageSize",value = "一页大小")
+            @RequestParam(required = false,defaultValue = "20") Integer pageSize){
+        if (StringUtils.isBlank(catId)){
+            return XMJSONResult.errorMsg("分类id为空");
+        }
+        PagedGridResult pagedGridResult = itemService.searchItemsByThirdCat(catId, sort, page, pageSize);
+        return XMJSONResult.ok(pagedGridResult);
+    }
 }

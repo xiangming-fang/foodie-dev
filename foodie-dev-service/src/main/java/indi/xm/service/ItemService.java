@@ -6,9 +6,9 @@ import indi.xm.pojo.ItemsParam;
 import indi.xm.pojo.ItemsSpec;
 import indi.xm.utils.PagedGridResult;
 import indi.xm.vo.CommentLevelCountVO;
-import indi.xm.vo.ItemCommentVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ProjectName: foodie-dev
@@ -77,4 +77,15 @@ public interface ItemService {
      * @return
      */
     public PagedGridResult searchItems(String keywords,String sort, Integer page, Integer pageSize);
+
+    /**
+     * 根据分类id 搜索商品
+     *
+     * @param catId
+     * @param sort
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    public PagedGridResult searchItemsByThirdCat(String catId,String sort, Integer page, Integer pageSize);
 }

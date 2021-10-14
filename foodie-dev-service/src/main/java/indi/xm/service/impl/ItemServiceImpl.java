@@ -134,6 +134,22 @@ public class ItemServiceImpl implements ItemService {
         return setterPageGrid(list,page);
     }
 
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public PagedGridResult searchItemsByThirdCat(
+            String catId,String sort, Integer page, Integer pageSize) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("catId",catId);
+        map.put("sort",sort);
+
+        // mybatis-pagehelper 分页助手
+        // 在查询之前使用分页插件，原理 - 统一拦截sql，为其提供分页功能
+        PageHelper.startPage(page,pageSize);
+        List<SearchItemsVO> list = itemsMapper.searchItemsByThirdCat(map);
+
+        return setterPageGrid(list,page);
+    }
+
     private PagedGridResult setterPageGrid(List<?> list,Integer page){
         // 分页处理
         PageInfo<?> pageList = new PageInfo<>(list);

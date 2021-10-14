@@ -16,4 +16,11 @@ public interface ItemsMapper extends MyMapper<Items> {
      * @param map
      */
     public List<SearchItemsVO> searchItems(@Param("map") Map<String,Object> map);
+
+    /**
+     * 根据分类id 搜索商品
+     *
+     * @param map
+     */
+    public List<SearchItemsVO> searchItemsByThirdCat(@Param("map") Map<String,Object> map);
 }
