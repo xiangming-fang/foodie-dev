@@ -53,7 +53,7 @@ public class ItemController {
         infoVO.setItem(items);
         infoVO.setItemImgList(itemsImgs);
         infoVO.setItemSpecList(itemsSpecs);
-        infoVO.setItemParam(itemsParam);
+        infoVO.setItemParams(itemsParam);
         return XMJSONResult.ok(infoVO);
     }
 }
