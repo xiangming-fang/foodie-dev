@@ -6,6 +6,7 @@ import indi.xm.enums.CommentLevel;
 import indi.xm.mapper.*;
 import indi.xm.pojo.*;
 import indi.xm.service.ItemService;
+import indi.xm.utils.DesensitizationUtil;
 import indi.xm.utils.PagedGridResult;
 import indi.xm.vo.CommentLevelCountVO;
 import indi.xm.vo.ItemCommentVO;
@@ -109,6 +110,10 @@ public class ItemServiceImpl implements ItemService {
         PageHelper.startPage(page,pageSize);
         List<ItemCommentVO> list = itemsCommentsMapper.queryItemComments(map);
 
+        // 脱敏处理
+        for (ItemCommentVO vo : list) {
+            vo.setNickname(DesensitizationUtil.commonDisplay(vo.getNickname()));
+        }
         return setterPageGrid(list,page);
     }
 
