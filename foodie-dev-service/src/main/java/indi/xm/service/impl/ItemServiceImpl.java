@@ -1,14 +1,10 @@
 package indi.xm.service.impl;
 
-import indi.xm.mapper.ItemsImgMapper;
-import indi.xm.mapper.ItemsMapper;
-import indi.xm.mapper.ItemsParamMapper;
-import indi.xm.mapper.ItemsSpecMapper;
-import indi.xm.pojo.Items;
-import indi.xm.pojo.ItemsImg;
-import indi.xm.pojo.ItemsParam;
-import indi.xm.pojo.ItemsSpec;
+import indi.xm.enums.CommentLevel;
+import indi.xm.mapper.*;
+import indi.xm.pojo.*;
 import indi.xm.service.ItemService;
+import indi.xm.vo.CommentLevelCountVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +35,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Resource
     private ItemsParamMapper itemsParamMapper;
+
+    @Resource
+    private ItemsCommentsMapper itemsCommentsMapper;
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -71,5 +70,32 @@ public class ItemServiceImpl implements ItemService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("itemId",itemId);
         return itemsParamMapper.selectOneByExample(example);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public CommentLevelCountVO queryCommentCounts(String itemId) {
+        Integer goodCounts = getCommentCounts(itemId, CommentLevel.GOOD.level);
+        Integer normalCounts = getCommentCounts(itemId, CommentLevel.NORMAL.level);
+        Integer badCounts = getCommentCounts(itemId, CommentLevel.BAD.level);
+        Integer totalCounts = goodCounts + normalCounts + badCounts;
+
+        // 封装VO,返回前端展示
+        CommentLevelCountVO commentLevelCountVO = new CommentLevelCountVO();
+        commentLevelCountVO.setGoodCounts(goodCounts);
+        commentLevelCountVO.setNormalCounts(normalCounts);
+        commentLevelCountVO.setBadCounts(badCounts);
+        commentLevelCountVO.setTotalCounts(totalCounts);
+        return commentLevelCountVO;
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    Integer getCommentCounts(String itemId, Integer level){
+        ItemsComments condition = new ItemsComments();
+        condition.setItemId(itemId);
+        if (level != null){
+            condition.setCommentLevel(level);
+        }
+        return itemsCommentsMapper.selectCount(condition);
     }
 }

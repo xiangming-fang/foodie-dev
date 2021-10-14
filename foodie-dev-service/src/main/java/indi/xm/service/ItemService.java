@@ -4,6 +4,7 @@ import indi.xm.pojo.Items;
 import indi.xm.pojo.ItemsImg;
 import indi.xm.pojo.ItemsParam;
 import indi.xm.pojo.ItemsSpec;
+import indi.xm.vo.CommentLevelCountVO;
 
 import java.util.List;
 
@@ -48,4 +49,11 @@ public interface ItemService {
      * @return
      */
     public ItemsParam queryItemParam(String itemId);
+
+    /**
+     * 根据商品id查询商品的评价等级（好评、中评、差评）数量
+     *
+     * @param itemId
+     */
+    public CommentLevelCountVO queryCommentCounts(String itemId);
 }
