@@ -1,8 +1,9 @@
 package indi.xm.service.impl;
 
-import indi.xm.mapper.CarouselMapper;
-import indi.xm.pojo.Carousel;
-import indi.xm.service.CarouselService;
+import indi.xm.enums.CategoryLevel;
+import indi.xm.mapper.CategoryMapper;
+import indi.xm.pojo.Category;
+import indi.xm.service.CategoryService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,24 +15,25 @@ import java.util.List;
 /**
  * @ProjectName: foodie-dev
  * @Package: indi.xm.service.impl
- * @ClassName: CarouselServiceImpl
+ * @ClassName: CategoryServiceImpl
  * @Author: albert.fang
- * @Description: 轮播图
- * @Date: 2021/10/14 10:15
+ * @Description:
+ * @Date: 2021/10/14 10:45
  */
 @Service
-public class CarouselServiceImpl implements CarouselService {
+public class CategoryServiceImpl implements CategoryService {
 
     @Resource
-    private CarouselMapper carouselMapper;
+    private CategoryMapper categoryMapper;
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
-    public List<Carousel> queryAll(Integer isShow) {
-        Example example = new Example(Carousel.class);
-        example.orderBy("sort").asc();
+    public List<Category> queryAllRootLevelCats() {
+
+        Example example = new Example(Category.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("isShow",isShow);
-        return carouselMapper.selectByExample(example);
+        criteria.andEqualTo("type", CategoryLevel.FIRST.level);
+
+        return categoryMapper.selectByExample(example);
     }
 }
