@@ -1,6 +1,5 @@
 package indi.xm.vo;
 
-import javax.persistence.Id;
 import java.util.List;
 
 /**
@@ -33,7 +32,7 @@ public class CategoryVO {
     private Integer fatherId;
 
     // 三级分类
-    private List<SubCategoryVO> subCategoryVOS;
+    private List<SubCategoryVO> subCatList;
 
     public Integer getId() {
         return id;
@@ -67,11 +66,11 @@ public class CategoryVO {
         this.fatherId = fatherId;
     }
 
-    public List<SubCategoryVO> getSubCategoryVOS() {
-        return subCategoryVOS;
+    public List<SubCategoryVO> getSubCatList() {
+        return subCatList;
     }
 
-    public void setSubCategoryVOS(List<SubCategoryVO> subCategoryVOS) {
-        this.subCategoryVOS = subCategoryVOS;
+    public void setSubCatList(List<SubCategoryVO> subCatList) {
+        this.subCatList = subCatList;
     }
 }
