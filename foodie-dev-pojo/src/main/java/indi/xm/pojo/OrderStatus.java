@@ -14,36 +14,41 @@ public class OrderStatus {
 
     /**
      * 订单状态
+     * [10:待付款]状态
+     * [20:已付款，待发货]状态
+     * [30：已发货，待收货]状态
+     * [40：交易成功]状态
+     * [50：交易关闭]状态（代付款主动取消、代付款长时间未付款主动关闭）
      */
     @Column(name = "order_status")
     private Integer orderStatus;
 
     /**
-     * 订单创建时间;对应[10:待付款]状态
+     * 订单创建时间;
      */
     @Column(name = "created_time")
     private Date createdTime;
 
     /**
-     * 支付成功时间;对应[20:已付款，待发货]状态
+     * 支付成功时间;
      */
     @Column(name = "pay_time")
     private Date payTime;
 
     /**
-     * 发货时间;对应[30：已发货，待收货]状态
+     * 发货时间;
      */
     @Column(name = "deliver_time")
     private Date deliverTime;
 
     /**
-     * 交易成功时间;对应[40：交易成功]状态
+     * 交易成功时间;
      */
     @Column(name = "success_time")
     private Date successTime;
 
     /**
-     * 交易关闭时间;对应[50：交易关闭]状态
+     * 交易关闭时间;
      */
     @Column(name = "close_time")
     private Date closeTime;
