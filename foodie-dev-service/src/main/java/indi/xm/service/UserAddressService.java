@@ -1,5 +1,6 @@
 package indi.xm.service;
 
+import indi.xm.bo.UserAddressBO;
 import indi.xm.pojo.UserAddress;
 import org.springframework.stereotype.Service;
 
@@ -22,4 +23,12 @@ public interface UserAddressService {
      * @return
      */
     public List<UserAddress> queryAddressListByUserId(String userId);
+
+    /**
+     * 创建用户收货地址
+     *
+     * @param userAddressBO
+     * @return
+     */
+    public UserAddress createUserAddress(UserAddressBO userAddressBO);
 }

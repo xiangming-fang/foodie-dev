@@ -1,5 +1,6 @@
 package indi.xm.controller;
 
+import indi.xm.bo.UserAddressBO;
 import indi.xm.pojo.UserAddress;
 import indi.xm.service.UserAddressService;
 import indi.xm.utils.XMJSONResult;
@@ -48,6 +49,13 @@ public class AddressController {
         }
         List<UserAddress> result = userAddressService.queryAddressListByUserId(userId);
         return XMJSONResult.ok(result);
+    }
+
+    @PostMapping("/add")
+    @ApiOperation(value = "给当前用户添加收货地址",notes = "给当前用户添加收货地址",httpMethod = "POST")
+    public XMJSONResult add(@RequestBody UserAddressBO userAddressBO){
+        UserAddress userAddress = userAddressService.createUserAddress(userAddressBO);
+        return XMJSONResult.ok(userAddress);
     }
 
 

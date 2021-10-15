@@ -244,7 +244,7 @@ public class UserAddress {
     /**
      * 设置是否默认地址
      *
-     * @param isDefault 是否默认地址
+     * @param isDefault 是否默认地址 1 默认 0 非默认
      */
     public void setIsDefault(Integer isDefault) {
         this.isDefault = isDefault;
