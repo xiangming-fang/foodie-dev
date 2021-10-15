@@ -2,7 +2,6 @@ package indi.xm.service;
 
 import indi.xm.bo.UserAddressBO;
 import indi.xm.pojo.UserAddress;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -33,11 +32,20 @@ public interface UserAddressService {
     public UserAddress createUserAddress(UserAddressBO userAddressBO);
 
     /**
-     * 将用户下的某个地址设为默认地址
+     * 将用户下的某个收货地址设为默认地址
      *
      * @param userId
      * @param addressId
      * @return
      */
     public UserAddress setDefaultAddress(String userId,String addressId);
+
+    /**
+     * 删除用户下的某个收货地址
+     *
+     * @param userId
+     * @param addressId
+     * @return
+     */
+    public void delAddress(String userId,String addressId);
 }

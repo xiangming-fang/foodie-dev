@@ -7,6 +7,8 @@ import indi.xm.pojo.UserAddress;
 import indi.xm.service.UserAddressService;
 import org.n3r.idworker.Sid;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
@@ -31,6 +33,7 @@ public class UserAddressServiceImpl implements UserAddressService {
     private Sid sid;
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
     public List<UserAddress> queryAddressListByUserId(String userId) {
 
         Example example = new Example(UserAddress.class);
@@ -41,6 +44,7 @@ public class UserAddressServiceImpl implements UserAddressService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public UserAddress createUserAddress(UserAddressBO userAddressBO) {
         String addressId = sid.nextShort();
         UserAddress userAddress = new UserAddress();
@@ -60,6 +64,7 @@ public class UserAddressServiceImpl implements UserAddressService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public UserAddress setDefaultAddress(String userId, String addressId) {
         // 1、如果之前存在默认地址，那么找到之前的那个默认地址，将其设为非默认地址
         Example example = new Example(UserAddress.class);
@@ -76,5 +81,14 @@ public class UserAddressServiceImpl implements UserAddressService {
         targetAddress.setIsDefault(AddressEnum.YES.type);
         userAddressMapper.updateByPrimaryKey(targetAddress);
         return targetAddress;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void delAddress(String userId, String addressId) {
+        UserAddress userAddress = new UserAddress();
+        userAddress.setUserId(userId);
+        userAddress.setId(addressId);
+        userAddressMapper.delete(userAddress);
     }
 }

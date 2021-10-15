@@ -33,7 +33,7 @@ public class AddressController {
      * 用户在确认订单页面，可以针对收货地址做如下操作：
      * 1、查询用户的所有收货地址列表 list
      * 2、新增收货地址 add
-     * 3、删除收货地址
+     * 3、删除收货地址 delete
      * 4、修改收货地址
      * 5、设置默认地址 setDefalut
      */
@@ -69,6 +69,19 @@ public class AddressController {
         }
         UserAddress res = userAddressService.setDefaultAddress(userId, addressId);
         return XMJSONResult.ok(res);
+    }
+
+    @PostMapping("/delete")
+    @ApiOperation(value = "删除当前收货地址",notes = "删除当前收货地址",httpMethod = "POST")
+    public XMJSONResult delete(@ApiParam(name = "userId",value = "用户id",required = true)
+                                   @RequestParam String userId,
+                                   @ApiParam(name = "addressId",value = "地址id",required = true)
+                                   @RequestParam String addressId){
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(addressId)){
+            return XMJSONResult.errorMsg("参数非法");
+        }
+        userAddressService.delAddress(userId, addressId);
+        return XMJSONResult.ok();
     }
 
 
