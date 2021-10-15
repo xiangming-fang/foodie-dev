@@ -91,4 +91,20 @@ public class UserAddressServiceImpl implements UserAddressService {
         userAddress.setId(addressId);
         userAddressMapper.delete(userAddress);
     }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public UserAddress updateAddress(UserAddressBO userAddressBO) {
+        String addressId = userAddressBO.getAddressId();
+        UserAddress userAddress = userAddressMapper.selectByPrimaryKey(addressId);
+        userAddress.setUserId(userAddressBO.getUserId());
+        userAddress.setProvince(userAddressBO.getProvince());
+        userAddress.setDistrict(userAddressBO.getDistrict());
+        userAddress.setMobile(userAddressBO.getMobile());
+        userAddress.setReceiver(userAddressBO.getReceiver());
+        userAddress.setDetail(userAddressBO.getDetail());
+        userAddress.setCity(userAddressBO.getCity());
+        userAddressMapper.updateByPrimaryKey(userAddress);
+        return userAddress;
+    }
 }

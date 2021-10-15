@@ -48,4 +48,12 @@ public interface UserAddressService {
      * @return
      */
     public void delAddress(String userId,String addressId);
+
+    /**
+     * 更新收货地址
+     *
+     * @param userAddressBO
+     * @return
+     */
+    public UserAddress updateAddress(UserAddressBO userAddressBO);
 }
