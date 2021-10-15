@@ -31,4 +31,13 @@ public interface UserAddressService {
      * @return
      */
     public UserAddress createUserAddress(UserAddressBO userAddressBO);
+
+    /**
+     * 将用户下的某个地址设为默认地址
+     *
+     * @param userId
+     * @param addressId
+     * @return
+     */
+    public UserAddress setDefaultAddress(String userId,String addressId);
 }

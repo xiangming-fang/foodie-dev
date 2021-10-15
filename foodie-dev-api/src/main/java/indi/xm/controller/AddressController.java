@@ -35,7 +35,7 @@ public class AddressController {
      * 2、新增收货地址 add
      * 3、删除收货地址
      * 4、修改收货地址
-     * 5、设置默认地址
+     * 5、设置默认地址 setDefalut
      */
 
 
@@ -56,6 +56,19 @@ public class AddressController {
     public XMJSONResult add(@RequestBody UserAddressBO userAddressBO){
         UserAddress userAddress = userAddressService.createUserAddress(userAddressBO);
         return XMJSONResult.ok(userAddress);
+    }
+
+    @PostMapping("/setDefalut")
+    @ApiOperation(value = "给当前用户当前地址设为默认地址",notes = "给当前用户当前地址设为默认地址",httpMethod = "POST")
+    public XMJSONResult setDefalut(@ApiParam(name = "userId",value = "用户id",required = true)
+                                   @RequestParam String userId,
+                                   @ApiParam(name = "addressId",value = "地址id",required = true)
+                                   @RequestParam String addressId){
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(addressId)){
+            return XMJSONResult.errorMsg("参数非法");
+        }
+        UserAddress res = userAddressService.setDefaultAddress(userId, addressId);
+        return XMJSONResult.ok(res);
     }
 
 

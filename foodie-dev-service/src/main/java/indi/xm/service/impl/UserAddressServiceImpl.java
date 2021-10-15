@@ -58,4 +58,23 @@ public class UserAddressServiceImpl implements UserAddressService {
         userAddressMapper.insert(userAddress);
         return userAddress;
     }
+
+    @Override
+    public UserAddress setDefaultAddress(String userId, String addressId) {
+        // 1、如果之前存在默认地址，那么找到之前的那个默认地址，将其设为非默认地址
+        Example example = new Example(UserAddress.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userId",userId);
+        criteria.andEqualTo("isDefault",AddressEnum.YES.type);
+        UserAddress userAddress = userAddressMapper.selectOneByExample(example);
+        if (userAddress != null){
+            userAddress.setIsDefault(AddressEnum.NO.type);
+            userAddressMapper.updateByPrimaryKey(userAddress);
+        }
+        // 2、将目标addressId的记录设为默认地址
+        UserAddress targetAddress = userAddressMapper.selectByPrimaryKey(addressId);
+        targetAddress.setIsDefault(AddressEnum.YES.type);
+        userAddressMapper.updateByPrimaryKey(targetAddress);
+        return targetAddress;
+    }
 }
