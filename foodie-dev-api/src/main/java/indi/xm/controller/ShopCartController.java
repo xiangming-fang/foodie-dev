@@ -38,4 +38,19 @@ public class ShopCartController {
 
         return XMJSONResult.ok();
     }
+
+    @PostMapping("/del")
+    @ApiOperation(value = "从购物车里删除商品",notes = "从购物车里删除商品",httpMethod = "POST")
+    public XMJSONResult del(@RequestParam String userId,
+                            @RequestParam String itemSpecId,
+                            HttpServletRequest request,
+                            HttpServletResponse response) {
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(itemSpecId)){
+            return XMJSONResult.errorMsg("参数不能为空");
+        }
+
+        // TODO 用户在页面删除购物车的商品数据，如果用户此时已经登录则需要删除后端购物车中的数据，达到同步的目的
+
+        return XMJSONResult.ok();
+    }
 }
