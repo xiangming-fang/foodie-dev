@@ -8,7 +8,7 @@ package indi.xm.enums;
  * @Description: 是否 枚举
  * @Date: 2021/10/14 10:21
  */
-public enum YesOrNo {
+public enum YesOrNoEnum {
 
     NO(0,"否"),
     YES(1,"是");
@@ -17,7 +17,7 @@ public enum YesOrNo {
 
     public String des;
 
-    YesOrNo(Integer type, String des){
+    YesOrNoEnum(Integer type, String des){
         this.type = type;
         this.des = des;
     }

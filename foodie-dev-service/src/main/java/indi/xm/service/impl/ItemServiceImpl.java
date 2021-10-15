@@ -2,7 +2,7 @@ package indi.xm.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import indi.xm.enums.CommentLevel;
+import indi.xm.enums.CommentLevelEnum;
 import indi.xm.mapper.*;
 import indi.xm.pojo.*;
 import indi.xm.service.ItemService;
@@ -82,9 +82,9 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
     public CommentLevelCountVO queryCommentCounts(String itemId) {
-        Integer goodCounts = getCommentCounts(itemId, CommentLevel.GOOD.level);
-        Integer normalCounts = getCommentCounts(itemId, CommentLevel.NORMAL.level);
-        Integer badCounts = getCommentCounts(itemId, CommentLevel.BAD.level);
+        Integer goodCounts = getCommentCounts(itemId, CommentLevelEnum.GOOD.level);
+        Integer normalCounts = getCommentCounts(itemId, CommentLevelEnum.NORMAL.level);
+        Integer badCounts = getCommentCounts(itemId, CommentLevelEnum.BAD.level);
         Integer totalCounts = goodCounts + normalCounts + badCounts;
 
         // 封装VO,返回前端展示

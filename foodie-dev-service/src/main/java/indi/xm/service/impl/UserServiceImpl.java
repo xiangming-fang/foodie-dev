@@ -1,14 +1,12 @@
 package indi.xm.service.impl;
 
 import indi.xm.bo.UserBo;
-import indi.xm.enums.Sex;
+import indi.xm.enums.SexEnum;
 import indi.xm.mapper.UsersMapper;
 import indi.xm.pojo.Users;
 import indi.xm.service.UserService;
 import indi.xm.utils.DateUtil;
 import indi.xm.utils.MD5Utils;
-import indi.xm.utils.XMJSONResult;
-import org.apache.catalina.User;
 import org.n3r.idworker.Sid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -18,7 +16,6 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * @ProjectName: foodie-dev
@@ -68,7 +65,7 @@ public class UserServiceImpl implements UserService {
         // 默认生日
         users.setBirthday(DateUtil.stringToDate("1900-01-01"));
         // 默认性别 保密
-        users.setSex(Sex.secret.type);
+        users.setSex(SexEnum.secret.type);
 
         users.setCreatedTime(new Date());
         users.setUpdatedTime(new Date());

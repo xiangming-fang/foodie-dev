@@ -1,6 +1,6 @@
 package indi.xm.service.impl;
 
-import indi.xm.enums.CategoryLevel;
+import indi.xm.enums.CategoryLevelEnum;
 import indi.xm.mapper.CategoryMapper;
 import indi.xm.pojo.Category;
 import indi.xm.service.CategoryService;
@@ -35,7 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         Example example = new Example(Category.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("type", CategoryLevel.FIRST.level);
+        criteria.andEqualTo("type", CategoryLevelEnum.FIRST.level);
 
         return categoryMapper.selectByExample(example);
     }

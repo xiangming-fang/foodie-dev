@@ -1,6 +1,6 @@
 package indi.xm.controller;
 
-import indi.xm.enums.YesOrNo;
+import indi.xm.enums.YesOrNoEnum;
 import indi.xm.pojo.Carousel;
 import indi.xm.pojo.Category;
 import indi.xm.service.CarouselService;
@@ -41,7 +41,7 @@ public class IndexController {
     @GetMapping("/carousel")
     @ApiOperation(value = "首页轮播图",notes = "首页轮播图",httpMethod = "GET")
     public XMJSONResult carousel(){
-        List<Carousel> carousels = carouselService.queryAll(YesOrNo.YES.type);
+        List<Carousel> carousels = carouselService.queryAll(YesOrNoEnum.YES.type);
         return XMJSONResult.ok(carousels);
     }
 

@@ -1,7 +1,5 @@
 package indi.xm.enums;
 
-import io.swagger.models.auth.In;
-
 /**
  * @ProjectName: foodie-dev
  * @Package: indi.xm.enums
@@ -10,7 +8,7 @@ import io.swagger.models.auth.In;
  * @Description: 商品评价等级
  * @Date: 2021/10/14 15:20
  */
-public enum CommentLevel {
+public enum CommentLevelEnum {
 
     GOOD(1,"好评"),
     NORMAL(2,"中评"),
@@ -19,7 +17,7 @@ public enum CommentLevel {
     public Integer level;
     public String des;
 
-    CommentLevel(Integer level,String des){
+    CommentLevelEnum(Integer level, String des){
         this.level = level;
         this.des = des;
     }

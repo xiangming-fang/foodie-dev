@@ -8,7 +8,7 @@ package indi.xm.enums;
  * @Description: 首页类别
  * @Date: 2021/10/14 10:47
  */
-public enum CategoryLevel {
+public enum CategoryLevelEnum {
 
     FIRST(1,"一级分类"),
     SECOND(2,"二级分类"),
@@ -17,7 +17,7 @@ public enum CategoryLevel {
     public Integer level;
     public String des;
 
-    CategoryLevel(Integer level, String des){
+    CategoryLevelEnum(Integer level, String des){
         this.level = level;
         this.des = des;
     }
