@@ -3,6 +3,7 @@ package indi.xm.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import indi.xm.enums.CommentLevelEnum;
+import indi.xm.enums.YesOrNoEnum;
 import indi.xm.mapper.*;
 import indi.xm.pojo.*;
 import indi.xm.service.ItemService;
@@ -157,6 +158,22 @@ public class ItemServiceImpl implements ItemService {
         // 将 ids 全部加入到 specIdList 中
         Collections.addAll(specIdList,ids);
         return itemsMapper.queryItemsBySpecIds(specIdList);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public ItemsSpec queryItemSpecById(String specId) {
+        return itemsSpecMapper.selectByPrimaryKey(specId);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public String queryItemMainImgById(String itemId) {
+        ItemsImg itemsImg = new ItemsImg();
+        itemsImg.setItemId(itemId);
+        itemsImg.setIsMain(YesOrNoEnum.YES.type);
+        ItemsImg result = itemsImgMapper.selectOne(itemsImg);
+        return result != null ? result.getUrl() : "";
     }
 
     private PagedGridResult setterPageGrid(List<?> list, Integer page){
