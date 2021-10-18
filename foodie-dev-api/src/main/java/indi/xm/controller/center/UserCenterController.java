@@ -1,7 +1,9 @@
 package indi.xm.controller.center;
 
 import indi.xm.bo.center.CenterUserBO;
+import indi.xm.enums.ConstantEnum;
 import indi.xm.pojo.Users;
+import indi.xm.resources.FileUpload;
 import indi.xm.service.center.CenterUserService;
 import indi.xm.utils.CookieUtils;
 import indi.xm.utils.JsonUtils;
@@ -9,16 +11,21 @@ import indi.xm.utils.XMJSONResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +45,60 @@ public class UserCenterController {
 
     @Resource
     private CenterUserService centerUserService;
+
+    @Resource
+    private FileUpload fileUpload;
+
+    @PostMapping("uploadFace")
+    @ApiOperation(value = "用户头像修改",tags = "用户头像修改",httpMethod = "POST")
+    public XMJSONResult uploadFace(@ApiParam(name = "userId",value = "用户id",required = true) @RequestParam String userId,
+                                   @ApiParam(name = "file",value = "用户头像文件",required = true) @RequestParam MultipartFile file,
+                               HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // 1、定义头像保存的地址
+        String fileSpace = fileUpload.getImageUserFaceLocation();
+
+        // 2、在路径上位每一个用户增加一个userid，用于区分每个不同用户上传
+        String uploadPathPrefix = File.separator + userId;
+
+        String path = null;
+
+        // 开始文件上传
+        if (file != null){
+
+            // 获得文件上传的文件名称
+            String filename = file.getOriginalFilename();
+            if (StringUtils.isNotBlank(filename)){
+
+                // 文件重命名：保存方式 face-｛userid｝.png
+                String[] fileNameArr = filename.split("\\.");
+
+                // 获取文件的后缀名
+                String suffix = fileNameArr[fileNameArr.length - 1];
+
+                // 文件名称重组 face-{userid}.png
+                String newFileName = ConstantEnum.PREFIX_FACE.value + userId + "-" + System.currentTimeMillis() + "." + suffix;
+
+                // 上传的头像最终保存的位置
+                path = fileSpace + uploadPathPrefix + File.separator + newFileName;
+
+                File outFile = new File(path);
+                if (outFile.getParentFile() != null) {
+                    // 创建文件夹
+                    outFile.getParentFile().mkdirs();
+                }
+
+                // 文件输出保存到目录
+                try (FileOutputStream fos = new FileOutputStream(outFile); InputStream is = file.getInputStream()) {
+                    IOUtils.copy(is, fos);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else {
+            return XMJSONResult.errorMsg("文件不能为空");
+        }
+        return XMJSONResult.ok(path);
+    }
 
     /**
      * 根据userId更新用户信息
