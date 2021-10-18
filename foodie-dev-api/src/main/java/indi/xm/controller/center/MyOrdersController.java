@@ -31,7 +31,7 @@ public class MyOrdersController {
 
     @PostMapping("/query")
     @ApiOperation(value = "查询订单列表",notes = "查询订单列表接口",httpMethod = "POST")
-    public XMJSONResult catItems(
+    public XMJSONResult query(
             @ApiParam(name = "userId",value = "userId",required = true)
             @RequestParam String userId,
             @ApiParam(name = "orderStatus",value = "订单状态")
