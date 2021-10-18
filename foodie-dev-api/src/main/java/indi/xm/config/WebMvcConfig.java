@@ -22,6 +22,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/META-INF/resources/") // 映射swagger2页面
                 .addResourceLocations("file:/"); // 要访问的服务器上具体静态资源直接在后面拼接即可
     }
 
