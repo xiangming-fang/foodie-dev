@@ -44,4 +44,18 @@ public class MyOrdersController {
         PagedGridResult list = myOrdersService.queryMyOrders(userId, orderStatus, page, pageSize);
         return XMJSONResult.ok(list);
     }
+
+    // 订单发货，用于模拟
+    @PostMapping("/delivery")
+    @ApiOperation(value = "订单发货",notes = "订单发货",httpMethod = "POST")
+    public XMJSONResult delivery(
+            @ApiParam(name = "orderId",value = "orderId",required = true)
+            @RequestParam String orderId){
+        if (orderId == null){
+            return XMJSONResult.errorMsg("参数非法");
+        }
+        myOrdersService.updateDeliverOrderStatus(orderId);
+        return XMJSONResult.ok();
+    }
+
 }

@@ -24,4 +24,12 @@ public interface MyOrdersService {
      * @return
      */
     public PagedGridResult queryMyOrders(String userId, Integer orderStatus, int page, int pageSize);
+
+
+    /**
+     * 将订单状态改成发货状态
+     *
+     * @param orderId
+     */
+    public void updateDeliverOrderStatus(String orderId);
 }

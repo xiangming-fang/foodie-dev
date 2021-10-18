@@ -2,7 +2,10 @@ package indi.xm.service.center.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import indi.xm.enums.OrderStatusEnum;
+import indi.xm.mapper.OrderStatusMapper;
 import indi.xm.mapper.OrdersMapper;
+import indi.xm.pojo.OrderStatus;
 import indi.xm.service.center.MyOrdersService;
 import indi.xm.utils.PagedGridResult;
 import indi.xm.vo.MyOrdersVO;
@@ -11,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +32,9 @@ public class MyOrdersServiceImpl implements MyOrdersService {
     @Resource
     private OrdersMapper ordersMapper;
 
+    @Resource
+    private OrderStatusMapper orderStatusMapper;
+
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
     public PagedGridResult queryMyOrders(String userId, Integer orderStatus, int page, int pageSize) {
@@ -44,6 +51,16 @@ public class MyOrdersServiceImpl implements MyOrdersService {
         List<MyOrdersVO> list = ordersMapper.queryMyOrders(map);
 
         return setterPageGrid(list,page);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updateDeliverOrderStatus(String orderId) {
+        OrderStatus orderStatus = new OrderStatus();
+        orderStatus.setOrderId(orderId);
+        orderStatus.setOrderStatus(OrderStatusEnum.WAIT_RECEIVE.type);
+        orderStatus.setDeliverTime(new Date());
+        orderStatusMapper.updateByPrimaryKeySelective(orderStatus);
     }
 
     private PagedGridResult setterPageGrid(List<?> list, Integer page){
