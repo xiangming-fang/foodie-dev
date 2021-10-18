@@ -1,5 +1,7 @@
 package indi.xm.service.center.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import indi.xm.bo.center.OrderItemsCommentBO;
 import indi.xm.enums.YesOrNoEnum;
 import indi.xm.mapper.ItemsCommentsMapper;
@@ -10,6 +12,8 @@ import indi.xm.pojo.OrderItems;
 import indi.xm.pojo.OrderStatus;
 import indi.xm.pojo.Orders;
 import indi.xm.service.center.MyCommentsService;
+import indi.xm.utils.PagedGridResult;
+import indi.xm.vo.MyCommentVO;
 import org.n3r.idworker.Sid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -79,5 +83,34 @@ public class MyCommentsServiceImpl implements MyCommentsService {
         orderStatus.setOrderId(orderId);
         orderStatus.setCommentTime(new Date());
         orderStatusMapper.updateByPrimaryKeySelective(orderStatus);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public PagedGridResult queryMyComments(String userId, Integer page, Integer pageSize) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userId",userId);
+
+        // 开启分页
+        PageHelper.startPage(page,pageSize);
+
+        List<MyCommentVO> list = itemsCommentsMapper.queryMyComments(map);
+
+        return setterPageGrid(list,page);
+    }
+
+    private PagedGridResult setterPageGrid(List<?> list, Integer page){
+        // 分页处理
+        PageInfo<?> pageList = new PageInfo<>(list);
+        PagedGridResult gridResult = new PagedGridResult();
+        // 当前第几页
+        gridResult.setPage(page);
+        // list 分页后的数据
+        gridResult.setRows(list);
+        // total 总页数
+        gridResult.setTotal(pageList.getPages());
+        // records 总记录数
+        gridResult.setRecords(pageList.getTotal());
+        return gridResult;
     }
 }

@@ -2,6 +2,7 @@ package indi.xm.service.center;
 
 import indi.xm.bo.center.OrderItemsCommentBO;
 import indi.xm.pojo.OrderItems;
+import indi.xm.utils.PagedGridResult;
 
 import java.util.List;
 
@@ -32,4 +33,14 @@ public interface MyCommentsService {
      * @param commentList
      */
     public void saveComments(String orderId, String userId, List<OrderItemsCommentBO> commentList);
+
+    /**
+     * 分页查询我的评价列表
+     *
+     * @param userId
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    public PagedGridResult queryMyComments(String userId,Integer page,Integer pageSize);
 }

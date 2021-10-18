@@ -3,6 +3,7 @@ package indi.xm.mapper;
 import indi.xm.my.mapper.MyMapper;
 import indi.xm.pojo.ItemsComments;
 import indi.xm.vo.ItemCommentVO;
+import indi.xm.vo.MyCommentVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -24,5 +25,12 @@ public interface ItemsCommentsMapper extends MyMapper<ItemsComments> {
      * @param map
      */
     public void saveComments(@Param("paramsMap") Map<String,Object> map);
+
+    /**
+     * 查询我的评价列表
+     *
+     * @param map
+     */
+    public List<MyCommentVO> queryMyComments(@Param("paramsMap") Map<String,Object> map);
 
 }

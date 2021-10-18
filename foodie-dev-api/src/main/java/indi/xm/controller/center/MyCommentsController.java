@@ -6,10 +6,12 @@ import indi.xm.pojo.OrderItems;
 import indi.xm.pojo.Orders;
 import indi.xm.service.center.MyCommentsService;
 import indi.xm.service.center.MyOrdersService;
+import indi.xm.utils.PagedGridResult;
 import indi.xm.utils.XMJSONResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -83,6 +85,22 @@ public class MyCommentsController {
         myCommentsService.saveComments(orderId,userId,commentList);
 
         return XMJSONResult.ok();
+    }
+
+    @PostMapping("/query")
+    @ApiOperation(value = "查询我的评价列表",notes = "查询我的评价列表",httpMethod = "POST")
+    public XMJSONResult query(
+            @ApiParam(name = "userId",value = "userId",required = true)
+            @RequestParam String userId,
+            @ApiParam(name = "page",value = "第几页")
+            @RequestParam(required = false,defaultValue = "1") Integer page,
+            @ApiParam(name = "pageSize",value = "一页大小")
+            @RequestParam(required = false,defaultValue = "20") Integer pageSize){
+        if (StringUtils.isBlank(userId)){
+            return XMJSONResult.errorMsg("");
+        }
+        PagedGridResult pagedGridResult = myCommentsService.queryMyComments(userId, page, pageSize);
+        return XMJSONResult.ok(pagedGridResult);
     }
 
     /**
