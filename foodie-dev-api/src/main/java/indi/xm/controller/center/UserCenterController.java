@@ -76,6 +76,10 @@ public class UserCenterController {
                 // 获取文件的后缀名
                 String suffix = fileNameArr[fileNameArr.length - 1];
 
+                if (!suffix.equalsIgnoreCase("png") && !suffix.equalsIgnoreCase("jpg") && !suffix.equalsIgnoreCase("jpeg")){
+                    return XMJSONResult.errorMsg("图片格式不正确");
+                }
+
                 // 文件名称重组 face-{userid}.png
                 String newFileName = ConstantEnum.PREFIX_FACE.value + userId + "-" + System.currentTimeMillis() + "." + suffix;
 
