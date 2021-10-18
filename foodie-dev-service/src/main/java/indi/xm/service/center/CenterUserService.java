@@ -1,5 +1,6 @@
 package indi.xm.service.center;
 
+import indi.xm.bo.center.CenterUserBO;
 import indi.xm.pojo.Users;
 
 /**
@@ -19,4 +20,10 @@ public interface CenterUserService {
      * @return
      */
     public Users queryUserInfoById(String userId);
+
+    /**
+     * 根据userid，更新用户信息
+     * @param userId
+     */
+    public Users updateUserById(String userId, CenterUserBO centerUserBO);
 }
