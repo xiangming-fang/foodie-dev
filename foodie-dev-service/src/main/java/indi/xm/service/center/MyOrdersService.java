@@ -1,5 +1,6 @@
 package indi.xm.service.center;
 
+import indi.xm.pojo.Orders;
 import indi.xm.utils.PagedGridResult;
 import indi.xm.vo.MyOrdersVO;
 
@@ -32,4 +33,30 @@ public interface MyOrdersService {
      * @param orderId
      */
     public void updateDeliverOrderStatus(String orderId);
+
+    /**
+     * 查询我的订单
+     *
+     * @param userId
+     * @param orderId
+     * @return
+     */
+    public Orders queryMyOrder(String userId,String orderId);
+
+    /**
+     * 更新订单状态 -> 确认收货
+     *
+     * @param orderId
+     * @return
+     */
+    public boolean updateReceiveOrderStatus(String orderId);
+
+    /**
+     * 逻辑删除订单
+     *
+     * @param userId
+     * @param orderId
+     * @return
+     */
+    public boolean deleteOrder(String userId,String orderId);
 }
