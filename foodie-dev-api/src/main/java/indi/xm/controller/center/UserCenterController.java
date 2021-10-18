@@ -6,6 +6,7 @@ import indi.xm.pojo.Users;
 import indi.xm.resources.FileUpload;
 import indi.xm.service.center.CenterUserService;
 import indi.xm.utils.CookieUtils;
+import indi.xm.utils.DateUtil;
 import indi.xm.utils.JsonUtils;
 import indi.xm.utils.XMJSONResult;
 import io.swagger.annotations.Api;
@@ -97,7 +98,18 @@ public class UserCenterController {
         }else {
             return XMJSONResult.errorMsg("文件不能为空");
         }
-        return XMJSONResult.ok(path);
+
+        // 获取服务图片地址
+        String imageServerUrl = fileUpload.getImageServerUrl();
+
+        // 网络映射得到的本地图片地址
+        // 通过网络访问本地静态资源，防止缓存，后面加个时间戳
+        String finalPath = imageServerUrl + path + "?t=" + DateUtil.getCurrentDateString(DateUtil.DATETIME_PATTERN);
+
+        Users users = centerUserService.updateUserFace(userId, finalPath);
+
+        CookieUtils.setCookie(request,response,"user",JsonUtils.objectToJson(users),true);
+        return XMJSONResult.ok(users);
     }
 
     /**
