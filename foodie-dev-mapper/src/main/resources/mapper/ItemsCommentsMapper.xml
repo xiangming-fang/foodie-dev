@@ -44,4 +44,58 @@
       </if>
 
   </select>
+
+  <select id="saveComments" parameterType="map">
+    insert into items_comments
+        (
+         id,
+         user_id,
+         item_id,
+         item_name,
+         item_spec_id,
+         sepc_name,
+         comment_level,
+         content,
+         created_time,
+         updated_time
+        )
+      values
+        <foreach collection="paramsMap.commentList" item="comment" index="index" separator=",">
+          (
+           #{comment.commentId},
+           #{paramsMap.userId},
+           #{comment.itemId},
+           #{comment.itemName},
+           #{comment.itemSpecId},
+           #{comment.itemSpecName},
+           #{comment.commentLevel},
+           #{comment.content},
+           now(),
+           now()
+          )
+        </foreach>
+  </select>
+
+
+  <select id="queryMyComments" parameterType="map" resultType="indi.xm.vo.MyCommentVO">
+      SELECT
+          ic.id as commentId,
+          ic.content as content,
+          ic.created_time as createdTime,
+          ic.item_id as itemId,
+          ic.item_name as itemName,
+          ic.sepc_name as specName,
+          ii.url as itemImg
+      FROM
+          items_comments ic
+              LEFT JOIN items_img ii ON ic.item_id = ii.item_id
+      WHERE
+          ic.user_id = #{paramsMap.userId}
+        AND ii.is_main = 1
+      ORDER BY
+          ic.created_time DESC
+  </select>
+
+
+
 </mapper>
