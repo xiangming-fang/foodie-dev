@@ -1,5 +1,6 @@
 package indi.xm.service.center;
 
+import indi.xm.bo.center.OrderItemsCommentBO;
 import indi.xm.pojo.OrderItems;
 
 import java.util.List;
@@ -21,4 +22,14 @@ public interface MyCommentsService {
      * @return
      */
     public List<OrderItems> queryPendingComment(String orderId);
+
+
+    /**
+     * 保存评价列表
+     *
+     * @param orderId
+     * @param userId
+     * @param commentList
+     */
+    public void saveComments(String orderId, String userId, List<OrderItemsCommentBO> commentList);
 }

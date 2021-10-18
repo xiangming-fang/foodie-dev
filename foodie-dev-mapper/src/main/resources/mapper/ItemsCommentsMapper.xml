@@ -44,4 +44,38 @@
       </if>
 
   </select>
+
+  <select id="saveComments" parameterType="map">
+    insert into items_comments
+        (
+         id,
+         user_id,
+         item_id,
+         item_name,
+         item_spec_id,
+         sepc_name,
+         comment_level,
+         content,
+         created_time,
+         updated_time
+        )
+      values
+        <foreach collection="paramsMap.commentList" item="comment" index="index" separator=",">
+          (
+           #{comment.commentId},
+           #{paramsMap.userId},
+           #{comment.itemId},
+           #{comment.itemName},
+           #{comment.itemSpecId},
+           #{comment.itemSpecName},
+           #{comment.commentLevel},
+           #{comment.content},
+           now(),
+           now()
+          )
+        </foreach>
+  </select>
+
+
+
 </mapper>

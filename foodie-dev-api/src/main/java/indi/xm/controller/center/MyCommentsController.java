@@ -1,5 +1,6 @@
 package indi.xm.controller.center;
 
+import indi.xm.bo.center.OrderItemsCommentBO;
 import indi.xm.enums.YesOrNoEnum;
 import indi.xm.pojo.OrderItems;
 import indi.xm.pojo.Orders;
@@ -10,10 +11,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -59,6 +58,31 @@ public class MyCommentsController {
 
         List<OrderItems> list = myCommentsService.queryPendingComment(orderId);
         return XMJSONResult.ok(list);
+    }
+
+    @PostMapping("/saveList")
+    @ApiOperation(value = "保存评价列表",notes = "保存评价列表",httpMethod = "POST")
+    public XMJSONResult saveList(
+            @ApiParam(name = "userId",value = "userId",required = true)
+            @RequestParam String userId,
+            @ApiParam(name = "orderId",value = "订单id",required = true)
+            @RequestParam(required = false) String orderId,
+            @RequestBody List<OrderItemsCommentBO> commentList){
+
+        // 1、判断用户和订单是否关联
+        XMJSONResult result = checkUserOrder(userId, orderId);
+        if (result.getStatus() != HttpStatus.OK.value()){
+            return XMJSONResult.errorMsg("订单非法");
+        }
+
+        // 2、判断评论内容list不能为空
+        if (CollectionUtils.isEmpty(commentList)){
+            return XMJSONResult.errorMsg("评论内容不能为空");
+        }
+
+        myCommentsService.saveComments(orderId,userId,commentList);
+
+        return XMJSONResult.ok();
     }
 
     /**

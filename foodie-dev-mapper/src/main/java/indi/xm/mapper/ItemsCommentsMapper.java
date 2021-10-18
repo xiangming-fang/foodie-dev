@@ -18,4 +18,11 @@ public interface ItemsCommentsMapper extends MyMapper<ItemsComments> {
      */
     public List<ItemCommentVO> queryItemComments(@Param("map") Map<String,Object> map);
 
+    /**
+     * 保存商品的评价列表
+     *
+     * @param map
+     */
+    public void saveComments(@Param("paramsMap") Map<String,Object> map);
+
 }
