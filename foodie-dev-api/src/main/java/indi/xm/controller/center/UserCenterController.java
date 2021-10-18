@@ -10,11 +10,18 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.boot.context.properties.bind.BindResult;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ProjectName: foodie-dev
@@ -41,13 +48,15 @@ public class UserCenterController {
     @PostMapping("update")
     @ApiOperation(value = "更新用户信息",tags = "更新用户信息",httpMethod = "POST")
     public XMJSONResult update(@ApiParam(name = "userId",value = "用户id",required = true) @RequestParam String userId,
-                               @RequestBody CenterUserBO centerUserBO,
+                               @RequestBody @Valid CenterUserBO centerUserBO,
+                               BindingResult result,
                                HttpServletRequest request,
                                HttpServletResponse response){
-        if (StringUtils.isBlank(userId)){
-            return XMJSONResult.errorMsg("参数非法");
+        // 判断binddingresult是否包含错误的验证消息，如果有直接return
+        if (result.hasErrors()) {
+            Map<String, String> errors = getErrors(result);
+            return XMJSONResult.errorMap(errors);
         }
-
         Users resUser = centerUserService.updateUserById(userId, centerUserBO);
         setNullProperty(resUser);
         // 刷新前端cookie
@@ -65,5 +74,23 @@ public class UserCenterController {
         users.setCreatedTime(null);
         users.setUpdatedTime(null);
         users.setBirthday(null);
+    }
+
+    /**
+     * 通过hibernate的valid验证从前端传到后端的bo错误信息
+     * @param bindResult
+     * @return
+     */
+    private Map<String,String> getErrors(BindingResult bindResult){
+        HashMap<String, String> errorInfoMap = new HashMap<>();
+        List<FieldError> fieldErrors = bindResult.getFieldErrors();
+        for (FieldError fieldError : fieldErrors) {
+            // 发生错误所对应的某一个属性
+            String field = fieldError.getField();
+            // 验证错误的信息
+            String errorMsg = fieldError.getDefaultMessage();
+            errorInfoMap.put(field,errorMsg);
+        }
+        return errorInfoMap;
     }
 }
