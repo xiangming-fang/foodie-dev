@@ -11,6 +11,7 @@ import indi.xm.pojo.Orders;
 import indi.xm.service.center.MyOrdersService;
 import indi.xm.utils.PagedGridResult;
 import indi.xm.vo.MyOrdersVO;
+import indi.xm.vo.OrderStatusCountsVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ProjectName: foodie-dev
@@ -112,6 +114,34 @@ public class MyOrdersServiceImpl implements MyOrdersService {
 
         int res = ordersMapper.updateByExampleSelective(updateOrder, example);
         return res == 1;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public OrderStatusCountsVO getMyOrderStatusCounts(String userId) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userId",userId);
+        map.put("orderStatus",OrderStatusEnum.WAIT_PAY.type);
+
+        // 1、待付款数量
+        int waitPayCounts = orderStatusMapper.getMyOrderStatusCounts(map);
+
+        // 2、已付款，待发货
+        map.put("orderStatus",OrderStatusEnum.WAIT_DELIVER.type);
+        int waitDeliverCounts = orderStatusMapper.getMyOrderStatusCounts(map);
+
+        // 3、已发货，待收货
+        map.put("orderStatus",OrderStatusEnum.WAIT_RECEIVE.type);
+        int waitReceiveCounts = orderStatusMapper.getMyOrderStatusCounts(map);
+
+        // 4、交易成功 & 待评价
+        map.put("orderStatus",OrderStatusEnum.SUCCESS.type);
+        map.put("isComment",YesOrNoEnum.NO.type);
+        int waitCommentCounts = orderStatusMapper.getMyOrderStatusCounts(map);
+
+        OrderStatusCountsVO orderStatusCountsVO = new OrderStatusCountsVO(waitPayCounts, waitDeliverCounts, waitReceiveCounts, waitCommentCounts);
+
+        return orderStatusCountsVO;
     }
 
     private PagedGridResult setterPageGrid(List<?> list, Integer page){

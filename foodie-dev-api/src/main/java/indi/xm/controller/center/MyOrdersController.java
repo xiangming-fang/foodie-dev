@@ -4,6 +4,7 @@ import indi.xm.pojo.Orders;
 import indi.xm.service.center.MyOrdersService;
 import indi.xm.utils.PagedGridResult;
 import indi.xm.utils.XMJSONResult;
+import indi.xm.vo.OrderStatusCountsVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -104,6 +105,18 @@ public class MyOrdersController {
             return XMJSONResult.errorMsg("订单删除失败");
         }
         return XMJSONResult.ok();
+    }
+
+    @PostMapping("/statusCounts")
+    @ApiOperation(value = "我的订单状态数概况",notes = "我的订单状态数概况",httpMethod = "POST")
+    public XMJSONResult statusCounts(
+            @ApiParam(name = "userId",value = "用户id",required = true)
+            @RequestParam String userId){
+        if (StringUtils.isBlank(userId)){
+            return XMJSONResult.errorMsg("非法参数");
+        }
+        OrderStatusCountsVO myOrderStatusCounts = myOrdersService.getMyOrderStatusCounts(userId);
+        return XMJSONResult.ok(myOrderStatusCounts);
     }
 
     /**

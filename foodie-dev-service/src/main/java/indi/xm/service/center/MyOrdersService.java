@@ -2,9 +2,9 @@ package indi.xm.service.center;
 
 import indi.xm.pojo.Orders;
 import indi.xm.utils.PagedGridResult;
-import indi.xm.vo.MyOrdersVO;
+import indi.xm.vo.OrderStatusCountsVO;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * @ProjectName: foodie-dev
@@ -59,4 +59,13 @@ public interface MyOrdersService {
      * @return
      */
     public boolean deleteOrder(String userId,String orderId);
+
+    /**
+     * 查询我的订单各种状态的数量
+     * orderStatus: 10、20、30、40、50
+     * 以及是否评价过
+     * @param userId
+     * @return
+     */
+    public OrderStatusCountsVO getMyOrderStatusCounts(String userId);
 }
