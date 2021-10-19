@@ -1,10 +1,11 @@
 package indi.xm.service.center;
 
+import indi.xm.pojo.OrderStatus;
 import indi.xm.pojo.Orders;
 import indi.xm.utils.PagedGridResult;
 import indi.xm.vo.OrderStatusCountsVO;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * @ProjectName: foodie-dev
@@ -68,4 +69,14 @@ public interface MyOrdersService {
      * @return
      */
     public OrderStatusCountsVO getMyOrderStatusCounts(String userId);
+
+    /**
+     * 获取分页的订单动向
+     *
+     * @param userId
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    public PagedGridResult getMyOrderTrend(String userId,Integer page,Integer pageSize);
 }

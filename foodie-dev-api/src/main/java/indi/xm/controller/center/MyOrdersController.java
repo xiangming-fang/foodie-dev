@@ -119,6 +119,21 @@ public class MyOrdersController {
         return XMJSONResult.ok(myOrderStatusCounts);
     }
 
+    @PostMapping("/trend")
+    @ApiOperation(value = "查询订单动向",notes = "查询订单动向接口",httpMethod = "POST")
+    public XMJSONResult trend(
+            @ApiParam(name = "userId",value = "userId",required = true)
+            @RequestParam String userId,
+            @RequestParam(required = false,defaultValue = "1") Integer page,
+            @ApiParam(name = "pageSize",value = "一页大小")
+            @RequestParam(required = false,defaultValue = "20") Integer pageSize) {
+        if (StringUtils.isBlank(userId)) {
+            return XMJSONResult.errorMsg("非法参数");
+        }
+        PagedGridResult res = myOrdersService.getMyOrderTrend(userId, page, pageSize);
+        return XMJSONResult.ok(res);
+    }
+
     /**
      * 用于验证用户和订单是否有关联关系，避免非法调用
      *

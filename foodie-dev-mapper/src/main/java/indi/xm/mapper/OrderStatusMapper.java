@@ -4,6 +4,7 @@ import indi.xm.my.mapper.MyMapper;
 import indi.xm.pojo.OrderStatus;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 public interface OrderStatusMapper extends MyMapper<OrderStatus> {
@@ -16,4 +17,13 @@ public interface OrderStatusMapper extends MyMapper<OrderStatus> {
      * @return
      */
     public int getMyOrderStatusCounts(@Param("paramsMap") Map map);
+
+
+    /**
+     * 查询我的订单动向
+     *
+     * @param map
+     * @return
+     */
+    public List<OrderStatus> getMyOrderTrend(@Param("paramsMap") Map map);
 }

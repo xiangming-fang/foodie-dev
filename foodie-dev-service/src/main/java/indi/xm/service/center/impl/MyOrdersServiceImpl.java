@@ -144,6 +144,16 @@ public class MyOrdersServiceImpl implements MyOrdersService {
         return orderStatusCountsVO;
     }
 
+    @Override
+    public PagedGridResult getMyOrderTrend(String userId, Integer page, Integer pageSize) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userId",userId);
+
+        PageHelper.startPage(page,pageSize);
+        List<OrderStatus> list = orderStatusMapper.getMyOrderTrend(map);
+        return setterPageGrid(list,page);
+    }
+
     private PagedGridResult setterPageGrid(List<?> list, Integer page){
         // 分页处理
         PageInfo<?> pageList = new PageInfo<>(list);
