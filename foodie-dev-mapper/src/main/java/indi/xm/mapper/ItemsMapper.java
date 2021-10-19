@@ -32,4 +32,12 @@ public interface ItemsMapper extends MyMapper<Items> {
      * @return
      */
     public List<ShopCartVO> queryItemsBySpecIds(@Param("specIdList") List<String> specIdList);
+
+    /**
+     * 通过乐观锁来更改库存
+     *
+     * @param specId
+     * @param buyCounts
+     */
+    public int decreaseItemSpecStock(@Param("specId") String specId,@Param("buyCounts") int buyCounts);
 }

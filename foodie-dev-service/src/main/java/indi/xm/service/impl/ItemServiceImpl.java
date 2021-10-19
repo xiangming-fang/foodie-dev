@@ -3,6 +3,7 @@ package indi.xm.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import indi.xm.enums.CommentLevelEnum;
+import indi.xm.enums.YesOrNoEnum;
 import indi.xm.mapper.*;
 import indi.xm.pojo.*;
 import indi.xm.service.ItemService;
@@ -157,6 +158,47 @@ public class ItemServiceImpl implements ItemService {
         // 将 ids 全部加入到 specIdList 中
         Collections.addAll(specIdList,ids);
         return itemsMapper.queryItemsBySpecIds(specIdList);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public ItemsSpec queryItemSpecById(String specId) {
+        return itemsSpecMapper.selectByPrimaryKey(specId);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public String queryItemMainImgById(String itemId) {
+        ItemsImg itemsImg = new ItemsImg();
+        itemsImg.setItemId(itemId);
+        itemsImg.setIsMain(YesOrNoEnum.YES.type);
+        ItemsImg result = itemsImgMapper.selectOne(itemsImg);
+        return result != null ? result.getUrl() : "";
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void decreaseItemSpecStock(String specId, int buyCounts) {
+
+        // lockUtil.getLock(); 加锁
+
+        // 1、查询库存
+//        int stock = itemsSpecMapper.selectByPrimaryKey(specId).getStock();
+
+        // 2、判断库存，是否能够见到0以下 (共享资源 记得考虑并发情况)
+        // (1) 集群环境下 synchronized 关键字会失效，性能低效
+        // (2) 锁数据库：不推荐，导致数据库性能低下
+        // (3) 分布式锁 zookeeper + redis (两个中间介)
+
+
+        // (4) 数据库乐观锁，暂时用这种方式
+        int resStock = itemsMapper.decreaseItemSpecStock(specId, buyCounts);
+
+        if (resStock != 1){
+            throw new RuntimeException("订单创建失败，原因：库存不足");
+        }
+
+        // lockUtil.unLock(); 解锁
     }
 
     private PagedGridResult setterPageGrid(List<?> list, Integer page){
