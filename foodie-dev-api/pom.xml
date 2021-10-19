@@ -11,6 +11,9 @@
 
     <artifactId>foodie-dev-api</artifactId>
 
+    <!-- 打包war [1] 标明打成war包-->
+    <packaging>war</packaging>
+
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
