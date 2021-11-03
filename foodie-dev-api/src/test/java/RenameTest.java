@@ -13,6 +13,29 @@ import java.io.File;
 public class RenameTest {
 
 //    @Test
+    public void pdfRenameTest(){
+        File targetFile = new File("E:\\study\\阶段三：逐个击破分布式核心问题（9~17周）\\第9周 分布式会话与单点登录SSO");
+        for (File file : targetFile.listFiles()) {
+            int index = file.getName().indexOf("-慕课网就业班");
+            // 替换广告字符
+            String fixedName = file.getName().substring(0,index) + ".mp4";
+            // 得到这个文件所在的文件夹
+            String parentPath = file.getParent();
+            file.renameTo(new File(parentPath + File.separator + fixedName));
+        }
+    }
+
+//    @Test
+    public void pdfRenameDelete(){
+        File targetFile = new File("E:\\study1\\阶段三：逐个击破分布式核心问题（9~17周）\\第9周 分布式会话与单点登录SSO");
+        for (File file : targetFile.listFiles()) {
+            if (file.getName().endsWith(".pdf")){
+                file.delete();
+            }
+        }
+    }
+
+//    @Test
     public void videoRenameTest(){
         File targetFile = new File("E:\\study\\阶段一：单体电商项目架构，开发与上线（1~5周）");
         recursionUpdateFileNames(targetFile);
