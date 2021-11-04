@@ -13,11 +13,9 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @Description: api启动类
  * @Date: 2021/9/13 15:38
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"indi.xm","org.n3r.idworker"})
 // 扫描 mybatis 通用 mapper 所在的包
 @MapperScan(basePackages = "indi.xm.mapper")
-// 指定项目启动时，扫描哪些包下的类
-@ComponentScan(basePackages = {"indi.xm","org.n3r.idworker"})
 public class Application {
 
     public static void main(String[] args) {
