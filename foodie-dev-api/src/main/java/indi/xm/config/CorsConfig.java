@@ -14,7 +14,8 @@ import org.springframework.web.filter.CorsFilter;
  * @Description: 解决前后端联调跨域问题
  * @Date: 2021/10/11 17:44
  */
-@Configuration
+// 暂时注释，放nginx里进行跨域设置的解决
+//@Configuration
 public class CorsConfig {
 
     public CorsConfig() {
@@ -25,7 +26,7 @@ public class CorsConfig {
         // 1、添加cors配置信息
         CorsConfiguration config = new CorsConfiguration();
         // 前端静态文件所处端口
-        config.addAllowedOrigin("http://localhost:90");
+        config.addAllowedOrigin("http://fxm.dsb.com");
 
         // 设置是否发送cookie信息
         config.setAllowCredentials(true);
