@@ -23,7 +23,7 @@ public class RenameTest {
     public void createPPTByXSLF() throws IOException {
         String parentFilePath = "E:\\IdeaProjects\\foodie-dev\\doc\\ppt\\第二阶段\\";
         new File(parentFilePath).mkdirs();
-        for (int i = 10; i < 25; i++) {
+        for (int i = 25; i < 41; i++) {
             String finalFile = parentFilePath + (i < 10 ? "0" + i : i) + " .pptx";
 //        String finalFile = parentFilePath + "test.pptx";
         // create a new empty slide show
